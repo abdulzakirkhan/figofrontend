@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+/* Theme tokens - use these across the app */
+:root {
+  --bg: #ffffff;
+  --panel-bg: #f3f5f6; /* light panel / surface */
+  --text: #0b1220;
+  --muted: #6b7280;
+  --primary: #0A0EB3; /* brand primary */
+  --primary-contrast: #ffffff;
+  --secondary: #32F0CD; /* brand secondary */
+  --accent: #48773f; /* accent used for active states */
+  --danger: #7F0000;
+}
+
+/* Dark theme overrides */
+.dark {
+  --bg: #071026; /* main dark background */
+  --panel-bg: #0b1b2b; /* panel in dark */
+  --text: #e6f0fb;
+  --muted: #9ca3af;
+  --primary: #2f3cff; /* adjusted primary for dark */
+  --primary-contrast: #ffffff;
+  --secondary: #29d6b0;
+  --accent: #2e6b3a;
+  --danger: #ff6b6b;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  background-color: var(--bg);
+  color: var(--text);
+  box-sizing: border-box;
+
+}
+
+/* Utility classes that use tokens so components can reference them directly */
+.bg-app {
+  background-color: var(--bg) !important;
+}
+.bg-panel {
+  background-color: var(--panel-bg) !important;
+}
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+.text-primary {
+  color: var(--primary) !important;
+}
+.bg-secondary {
+  background-color: var(--secondary) !important;
+}
+.text-secondary {
+  color: var(--secondary) !important;
+}
+.text-app {
+  color: var(--text) !important;
+}
+.text-muted {
+  color: var(--muted) !important;
+}
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+.text-danger { color: var(--danger) !important; }
+
+.test {
+  border: 2px solid red;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.primary-shadow{
+  box-shadow: 0px 4px 24px 0px #D2C3E44D;
+}
+
+/* React DatePicker Custom Styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: inherit;
+  border: 1px solid #E0E5F2;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(67, 24, 255, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #4318FF;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  padding-top: 12px;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: white;
+  font-weight: 600;
+}
+
+.react-datepicker__day {
+  color: #2B3674;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.react-datepicker__day:hover {
+  background-color: #F4F7FE;
+  border-radius: 8px;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #4318FF;
+  color: white;
+  border-radius: 8px;
+}
+
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #4318FF;
+}
+
+
+/* React Quill Custom Styling */
+.custom-quill .ql-toolbar {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid #E0E5F2;
+}
+
+.custom-quill .ql-container {
+  border: none;
+  font-family: inherit;
+}
+
+.custom-quill .ql-editor {
+  font-size: 13px;
+  color: #2B3674;
+  min-height: 200px;
+}
+
+.custom-quill .ql-editor.ql-blank::before {
+  color: #A3AED0;
+  font-style: normal;
+}
+
+
+/* React Draft WYSIWYG Custom Styling */
+.custom-editor .rdw-editor-toolbar {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid #E0E5F2;
+  margin-bottom: 0;
+  padding: 8px;
+}
+
+.custom-editor .rdw-editor-main {
+  background-color: white;
+  border: none;
+  padding: 10px;
+}
+
+.custom-editor .DraftEditor-root {
+  font-size: 13px;
+  color: #2B3674;
+}
+
+.custom-editor .public-DraftEditorPlaceholder-root {
+  color: #A3AED0;
+}
+
+.custom-editor .rdw-option-wrapper {
+  border: 1px solid #E0E5F2;
+  background: white;
+  min-width: 30px;
+  height: 30px;
+}
+
+.custom-editor .rdw-option-wrapper:hover {
+  background: #F4F7FE;
+  box-shadow: none;
+}
+
+.custom-editor .rdw-option-active {
+  background: #4318FF;
+  color: white;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .your-table-container, .your-table-container * {
+    visibility: visible;
+  }
+  .your-table-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}

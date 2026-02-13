@@ -866,13 +866,13 @@ const DataTable = ({
       {search && (
         <Box
           display="flex"
-          justifyContent="space-between"
+          justifyContent="end"
           alignItems="center"
           px={2}
           py={1.5}
         >
           {/* Show per page */}
-          {pagination && (
+          {/* {pagination && (
             <Box display="flex" alignItems="center" gap={1}>
               <Box fontSize="13px">Show</Box>
               <Select
@@ -888,7 +888,7 @@ const DataTable = ({
                 ))}
               </Select>
             </Box>
-          )}
+          )} */}
 
           {/* Search */}
           <TextField
@@ -1010,6 +1010,23 @@ const DataTable = ({
 
             {/* Pagination buttons */}
             <Box display="flex" alignItems="center" gap={0.5}>
+              {pagination && (
+            <Box display="flex" alignItems="center" gap={1}>
+              <Box fontSize="13px">Show</Box>
+              <Select
+                size="small"
+                value={rowsPerPage}
+                onChange={handleRowsPerPageChange}
+                sx={{ fontSize: '13px', height: 34 }}
+              >
+                {[5, 10, 25, 50].map((n) => (
+                  <MenuItem key={n} value={n}>
+                    {n}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          )}
               <IconButton
                 size="small"
                 disabled={page === 0}

@@ -35,6 +35,8 @@ const FEEDBACKS="/feedbacks"
 const ADMIN_AUDIT_LISTING = ADMIN+ADMIN+"s"+"/audits/list"
 const TRANSACTION_HISTORY = "/transactions/all"
 const SUBSCRIBERS = "/subscribers/all"
+const LOGIN_WITH_GOOGLE = "/google-login"
+
 export {
   BASE_URL,
   PERMISSIONS_MODULES,
@@ -50,6 +52,7 @@ export {
   VERIFY_OTP,
   RESEND_OTP,
   ADMIN_AUDIT_LISTING,
+  LOGIN_WITH_GOOGLE,
   // ADMIN ROUTES END
   //client user
   CLIENT_USER,

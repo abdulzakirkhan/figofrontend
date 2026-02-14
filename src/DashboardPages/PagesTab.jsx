@@ -7,7 +7,6 @@ const PagesTab = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openAddPageModal, setOpenAddPageModal] = useState(false);
 
-  console.log('Modal State:', openAddPageModal); // Debug log
 
   // Sample pages data matching Figma
   const pagesData = [

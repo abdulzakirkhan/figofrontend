@@ -30,7 +30,6 @@ import { useSelector } from "react-redux";
 
 function Navbar({ handleDrawerToggle }) {
   const {user}=useSelector(state=>state.auth)
-  console.log("user in navbar:",user?.name)
   const [showNotificaions, setShowNotifications] = useState(false);
   const [isSmall, setIsSmall] = useState(window.innerWidth >= 900);
   const role = localStorage.getItem("role");
@@ -162,7 +161,7 @@ function Navbar({ handleDrawerToggle }) {
                           <CloseIcon fontSize="small" />
                         </IconButton>
                       </MuiBox>
-                      <MenuItem sx={{ py: 1.5 }} onClick={() => { handleAvatarClose(); navigate('/profile'); }}>
+                      <MenuItem sx={{ py: 1.5 }} onClick={() => { handleAvatarClose(); navigate('profile'); }}>
                         <ListItemIcon>
                           <PersonOutlineIcon fontSize="small" />
                         </ListItemIcon>

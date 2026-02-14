@@ -22,7 +22,6 @@ export const Customers = () => {
     limit,
   });
 
-  console.log("Customers data:", data); 
 
   const tableData = data?.data || [];
 

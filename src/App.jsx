@@ -26,6 +26,7 @@ import CreatePackageTemplate from "./DashboardPages/Providers/PackageTemplates/C
 import AppBanner from "./DashboardPages/AppController/AppBanner.jsx";
 import PrivacyPolicy from "./DashboardPages/AppController/PrivacyPolicy.jsx";
 import TermAndConditions from "./DashboardPages/AppController/TermAndConditions.jsx";
+import { UserProfile } from "./DashboardPages/UserProfile.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Dashboardnav />}>
           <Route path="panel-dashboard" element={<Dashboard />} />
+          <Route path="profile" element={<UserProfile />} />
           <Route path="destinations" element={<Destinations />} />
           <Route path="plans" element={<Plans />} />
           <Route path="customers" element={<Customers />} />

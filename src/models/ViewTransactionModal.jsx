@@ -95,7 +95,6 @@ const ViewTransactionModal = ({ open, onClose, transaction }) => {
             </button>
             <button
               onClick={() => {
-                console.log('Save transaction:', transaction);
                 onClose();
               }}
               className="px-6 py-2.5 text-[14px] font-medium text-white bg-[#4318FF] rounded-lg hover:bg-[#3311DD] transition-colors"

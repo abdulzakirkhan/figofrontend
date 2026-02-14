@@ -1,7 +1,7 @@
 
 // src/redux/auth/authApi.js
 import { api } from '../service';
-import { ADMIN, AUTH_LOGIN, } from '../../constants/apiUrls';
+import { ADMIN, AUTH_LOGIN, LOGIN_WITH_GOOGLE, } from '../../constants/apiUrls';
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,6 +9,24 @@ export const authApi = api.injectEndpoints({
       query: (body) => {
         return {
           url:`${ADMIN}${AUTH_LOGIN}`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
+    loginWithGoogle: builder.mutation({
+      query: (body) => {
+        return {
+          url:`/admin/google-login`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
+    verifyOT: builder.mutation({
+      query: (body) => {
+        return {
+          url:`/admin/2fa/verify`,
           method: 'POST',
           body,
         };
@@ -34,6 +52,8 @@ export const authApi = api.injectEndpoints({
 
 export const { 
   useLoginMutation,
+  useLoginWithGoogleMutation,
+  useVerifyOTMutation,
   useGetMeQuery,
   useGetModulesTreeQuery
 } = authApi;

@@ -7,7 +7,6 @@ const TopUpModal = ({ open, onClose }) => {
   const [selectData, setSelectData] = useState('');
 
   const handleSave = () => {
-    console.log('Saving top-up:', { selectDays, selectData });
     // Add your save logic here
     onClose();
   };

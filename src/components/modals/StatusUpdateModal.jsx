@@ -7,7 +7,6 @@ const StatusUpdateModal = ({ open, onClose }) => {
   const [description, setDescription] = useState('');
 
   const handleSave = () => {
-    console.log('Saving status update:', { statusAction, description });
     // Add your save logic here
     onClose();
   };

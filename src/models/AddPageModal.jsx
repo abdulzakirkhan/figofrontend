@@ -44,9 +44,6 @@ const AddPageModal = ({open, onClose}) => {
     const html = editor.getHTML();
     const text = editor.getText();
 
-    console.log('Page Name:', pageName);
-    console.log('Content HTML:', html);
-    console.log('Content Text:', text);
 
     setIsOpen(false);
   };

@@ -7,8 +7,6 @@ const EditEsimModal = ({ open, onClose }) => {
   const [description, setDescription] = useState('');
 
   const handleSave = () => {
-    console.log('Status Change:', statusChange);
-    console.log('Description:', description);
     onClose();
   };
 

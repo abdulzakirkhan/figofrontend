@@ -98,7 +98,6 @@ const Transactions = ({id}) => {
   }, [data]);
 
 
-  console.log("data :",data);
   return (
     <DataTable
       columns={columns}

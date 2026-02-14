@@ -10,7 +10,6 @@ export const UserDetail = () => {
   const [params] = useSearchParams();
   const id = params.get("id");
 
-  console.log("Customer ID:", id);
 
   const { data, isLoading } = useGetCustomerDetailQuery(id);
 
@@ -21,7 +20,8 @@ export const UserDetail = () => {
 
   const user = data?.user;
 
-  const tabLabels = ["Purchases", "Device Information"];
+  // const tabLabels = ["Purchases", "Device Information"];
+  const tabLabels = ["Purchases"];
   const tabPanels = [
     // <Transactions transactions={data?.transactions || []} />,
 

@@ -19,7 +19,7 @@ const EsimProfile = () => {
 
     return {
       id: sub._id,
-      // userId:
+      userId:sub?._id ,
         //  srNo: index + 1,
       subscriberId: sub.subscriberId,
       imsi: sub.imsiList?.[0]?.imsi || '-',
@@ -62,45 +62,45 @@ const columns = [
   //   headerName: '#',
   //   align: 'center',
   // },
-  // { field: 'userId', headerName: 'User ID' },
+  { field: 'userId', headerName: 'User ID' },
   { field: 'subscriberId', headerName: 'Subscriber ID' },
   { field: 'imsi', headerName: 'IMSI' },
   { field: 'iccid', headerName: 'ICCID' },
 
-  { field: 'assignedUser', headerName: 'Assigned To User' },
+  // { field: 'assignedUser', headerName: 'Assigned To User' },
 
-  {
-    field: 'simStatus',
-    headerName: 'SIM Status',
-    renderCell: value => (
-      <span style={{ color: value === 'AFFECTED' ? 'green' : 'red' }}>
-        {value}
-      </span>
-    ),
-  },
+  // {
+  //   field: 'simStatus',
+  //   headerName: 'SIM Status',
+  //   renderCell: value => (
+  //     <span style={{ color: value === 'AFFECTED' ? 'green' : 'red' }}>
+  //       {value}
+  //     </span>
+  //   ),
+  // },
 
-  {
-    field: 'activePackage',
-    headerName: 'Active Package',
-  },
+  // {
+  //   field: 'activePackage',
+  //   headerName: 'Active Package',
+  // },
 
-  {
-    field: 'pendingPackages',
-    headerName: 'Pending Packages',
-    renderCell: value =>
-      value.length ? (
-        <ul style={{ paddingLeft: 16, margin: 0 }}>
-          {value.map((v, i) => (
-            <li key={i}>{v}</li>
-          ))}
-        </ul>
-      ) : (
-        'None'
-      ),
-  },
+  // {
+  //   field: 'pendingPackages',
+  //   headerName: 'Pending Packages',
+  //   renderCell: value =>
+  //     value.length ? (
+  //       <ul style={{ paddingLeft: 16, margin: 0 }}>
+  //         {value.map((v, i) => (
+  //           <li key={i}>{v}</li>
+  //         ))}
+  //       </ul>
+  //     ) : (
+  //       'None'
+  //     ),
+  // },
 
-  { field: 'pendingCount', headerName: 'Pending Count' },
-  { field: 'totalPackages', headerName: 'Total Packages' },
+  // { field: 'pendingCount', headerName: 'Pending Count' },
+  // { field: 'totalPackages', headerName: 'Total Packages' },
   { field: 'phoneNumber', headerName: 'Phone Number' },
   { field: 'activatedAt', headerName: 'Activation Date' },
   { field: 'lastUsage', headerName: 'Last Connection' },

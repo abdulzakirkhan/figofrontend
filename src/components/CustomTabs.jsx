@@ -58,8 +58,8 @@ const CustomTabs = ({ tabs, panels, setcurrentTab, setStatus, tabBgColor = "#f8f
       <Box
         sx={{
           position:"absolute",
-          bottom:'4px',
-          left:"0px",
+          top:'4px',
+          right:"15%",
           backgroundColor: tabBgColor,
           padding: "2px",
           borderRadius: "12px",

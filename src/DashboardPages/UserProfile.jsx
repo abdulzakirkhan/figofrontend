@@ -19,7 +19,7 @@ export const UserProfile = () => {
 
       const res = await axios.get(
         `${VITE_BASE_URL}/admin/2fa/setup?email=${user.email}`,
-        { withCredentials: true },
+        // { withCredentials: true },
       );
 
       setQrCodeUrl(res.data.qrCodeUrl);

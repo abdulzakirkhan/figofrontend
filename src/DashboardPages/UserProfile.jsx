@@ -43,6 +43,9 @@ export const UserProfile = () => {
       const res = await axios.post(`${VITE_BASE_URL}/admin/2fa/verify`, {
         email: user?.email,
         token: otp,
+        headers: {
+            "ngrok-skip-browser-warning": "true"
+          }
       });
       if (res.data.token) {
         setTwoFASetup(true);

@@ -39,7 +39,6 @@ export const UserProfile = () => {
         email: user?.email,
         token: otp,
       });
-      console.log("res :", res);
       if (res.data.token) {
         setTwoFASetup(true);
         toast.success("2FA enabled successfully!");
@@ -51,44 +50,50 @@ export const UserProfile = () => {
     }
   };
 
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">User Profile</h1>
 
-      {user?.twoFA?.enabled ? (
-        <p className="text-green-600 font-semibold">
-          ✅ 2FA is already enabled
-        </p>
-      ) : (
-        <div>
-          {!qrCodeUrl ? (
-            <button
-              onClick={handleSetup2FA}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-            >
-              Enable 2FA
-            </button>
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+
+          {/* <h1 className="text-2xl font-bold mb-4">User</h1> */}
+          <p className="pb-5">To access the dashboard, you must enable Two-Factor Authentication (2FA) for security purposes.</p>
+
+          {user?.twoFA?.enabled ? (
+            <p className="text-green-600 font-semibold">
+              ✅ 2FA is already enabled
+            </p>
           ) : (
-            <div className="mt-4">
-              <p>Scan this QR code in your Authenticator app:</p>
-              <img src={qrCodeUrl} alt="2FA QR Code" className="my-4" />
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter 6-digit code"
-                className="border px-3 py-2 rounded-lg"
-              />
-              <button
-                onClick={handleVerify2FA}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg ml-2"
-              >
-                Verify 2FA
-              </button>
+            <div>
+              {!qrCodeUrl ? (
+                <button
+                  onClick={handleSetup2FA}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Enable 2FA
+                </button>
+              ) : (
+                <div className="mt-4">
+                  <p>Scan this QR code in your Authenticator app:</p>
+                  <img src={qrCodeUrl} alt="2FA QR Code" className="my-4" />
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter 6-digit code"
+                    className="border px-3 py-2 rounded-lg"
+                  />
+                  <button
+                    onClick={handleVerify2FA}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg ml-2"
+                  >
+                    Verify 2FA
+                  </button>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
+      </div>
     </div>
   );
 };

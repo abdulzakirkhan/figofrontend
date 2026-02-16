@@ -27,6 +27,7 @@ import AppBanner from "./DashboardPages/AppController/AppBanner.jsx";
 import PrivacyPolicy from "./DashboardPages/AppController/PrivacyPolicy.jsx";
 import TermAndConditions from "./DashboardPages/AppController/TermAndConditions.jsx";
 import { UserProfile } from "./DashboardPages/UserProfile.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
@@ -34,66 +35,69 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/2fa/setup" element={<UserProfile />} />
         <Route path="/admin" element={<Dashboardnav />}>
-          <Route path="panel-dashboard" element={<Dashboard />} />
-          <Route path="profile" element={<UserProfile />} />
-          <Route path="destinations" element={<Destinations />} />
-          <Route path="plans" element={<Plans />} />
-          <Route path="customers" element={<Customers />} />
-          <Route path="support-and-help" element={<SupportandHelp />} />
-          <Route path="esim" element={<EsimProfile />} />
-          <Route path="transaction" element={<Transaction />} />
-          <Route path="customers-detail" element={<UserDetail />} />
+          <Route path="panel-dashboard" element={ <ProtectedRoute>
+            <Dashboard />
+            </ProtectedRoute>
+            } />
+          <Route path="destinations" element={<ProtectedRoute><Destinations /> </ProtectedRoute>} />
+          <Route path="plans" element={<ProtectedRoute> <Plans /> </ProtectedRoute>} />
+          <Route path="customers" element={<ProtectedRoute> <Customers /> </ProtectedRoute>} />
+          <Route path="support-and-help" element={<ProtectedRoute> <SupportandHelp /> </ProtectedRoute>} />
+          <Route path="esim" element={<ProtectedRoute> <EsimProfile /> </ProtectedRoute>} />
+          <Route path="transaction" element={<ProtectedRoute> <Transaction /> </ProtectedRoute>} />
+          <Route path="customers-detail" element={<ProtectedRoute> <UserDetail /> </ProtectedRoute>} />
           <Route
             path="systems-settings/roles-permissions"
-            element={<RolesAndPermissions />}
+            element={<ProtectedRoute><RolesAndPermissions /> </ProtectedRoute>}
           />
           <Route
             path="systems-settings/general-setting"
-            element={<GeneralSetting />}
+            element={<ProtectedRoute><GeneralSetting /> </ProtectedRoute>}
           />
           <Route
             path="systems-settings/logo-favicon"
-            element={<LogoFavicon />}
+            element={<ProtectedRoute><LogoFavicon /> </ProtectedRoute>}
           />
-          <Route path="support-and-help/ComplaintsDetail" element={<Chat />} />
+          <Route path="support-and-help/ComplaintsDetail" element={<ProtectedRoute><Chat /> </ProtectedRoute>} />
           {/* PROVIDERS */}
           <Route
             path="providers/package-templates"
-            element={<PackageTemplates />}
+            element={<ProtectedRoute> <PackageTemplates /> </ProtectedRoute>}
           />
           <Route
             path="providers/package-templates/:id"
-            element={<PackageTemplateDetail />}
+            element={<ProtectedRoute> <PackageTemplateDetail /> </ProtectedRoute>}
           />
           <Route
             path="providers/package-templates/create"
-            element={<CreatePackageTemplate />}
+            element={<ProtectedRoute><CreatePackageTemplate /> </ProtectedRoute>}
           />
           <Route
             path="providers/package-templates/edit"
-            element={<CreatePackageTemplate mode="edit" />}
+            element={<ProtectedRoute><CreatePackageTemplate mode="edit" /> </ProtectedRoute>}
           />
 
-          <Route path="providers/location-zones" element={<LocationZone />} />
-          <Route path="providers/subscribers" element={<Subscribers />} />
+          <Route path="providers/location-zones" element={<ProtectedRoute><LocationZone /> </ProtectedRoute>} />
+          <Route path="providers/subscribers" element={<ProtectedRoute><Subscribers /> </ProtectedRoute>} />
           <Route
             path="providers/subscribers/:imsi"
-            element={<SubscriberDetail />}
+            element={<ProtectedRoute><SubscriberDetail /> </ProtectedRoute>}
           />
 
           {/* APP CONTROLLER */}
             <Route
             path="appcontroller/app-banner"
-            element={<AppBanner/>}
+            element={<ProtectedRoute><AppBanner/> </ProtectedRoute>}
           />
             <Route
             path="appcontroller/privacy-policy"
-            element={<PrivacyPolicy/>}
+            element={<ProtectedRoute><PrivacyPolicy/></ProtectedRoute>}
           />
             <Route
             path="appcontroller/terms-and-conditions"
-            element={<TermAndConditions/>}
+            element={<ProtectedRoute><TermAndConditions/> </ProtectedRoute>}
           />
         </Route>
       </Routes>

@@ -1,17 +1,13 @@
 import { Box, CssBaseline } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 
 
 const Dashboardnav = ({ type,navigatePage }) => {
   const [profileData, setProfileData] = useState({});
- 
 
- 
- 
- 
   return (
     <Box
       className=""

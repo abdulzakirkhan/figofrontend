@@ -50,18 +50,17 @@ export const Login = () => {
     const payload = { email, password, rememberMe };
 
     const res = await login(payload).unwrap();
-
-
     if (res?.twoFARequired) {
       setTwoFAEmail(res.email);    
       setShowTwoFAInput(true);   
       return;                       
+    }else{
+      const { token, user } = res;
+      dispatch(setCredentials({ token, user }));
+      toast.success("Login successful!");
+      navigate('/2fa/setup');
     }
 
-    const { token, user } = res;
-    dispatch(setCredentials({ token, user }));
-    toast.success("Login successful!");
-    navigate('/admin/panel-dashboard');
 
   } catch (err) {
     const msg = err?.data?.message || err?.error || "Login failed";
@@ -141,7 +140,7 @@ export const Login = () => {
                   </div>
 
                   {/* Remember Me & Forgot */}
-                  <div className="flex items-center justify-between">
+                  {/* <div className="flex items-center justify-between">
                     <label className="flex items-center">
                       <input
                         type="checkbox"
@@ -154,7 +153,7 @@ export const Login = () => {
                     <a href="#" className="text-sm text-blue-600 hover:underline">
                       Forgot Password?
                     </a>
-                  </div>
+                  </div> */}
 
                   {/* Submit Button */}
                 

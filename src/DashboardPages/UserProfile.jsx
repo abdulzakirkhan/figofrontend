@@ -18,8 +18,13 @@ export const UserProfile = () => {
       if (!user?.email) return toast.error("User not available");
 
       const res = await axios.get(
-        `${VITE_BASE_URL}/admin/2fa/setup?email=${user.email}`,
-        // { withCredentials: true },
+        `${VITE_BASE_URL}/admin/2fa/setup?email=${user.email}`,{
+
+          // { withCredentials: true },
+          headers: {
+            "ngrok-skip-browser-warning": "true"
+          }
+        }
       );
 
       setQrCodeUrl(res.data.qrCodeUrl);

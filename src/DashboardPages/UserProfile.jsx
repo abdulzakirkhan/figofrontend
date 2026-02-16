@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const UserProfile = () => {
   const [twoFASetup, setTwoFASetup] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [secret, setSecret] = useState("");
   const [otp, setOtp] = useState("");
-
+  const navigate=useNavigate()
   const user = useSelector((state) => state.auth.user);
 
   const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -52,7 +53,9 @@ export const UserProfile = () => {
         toast.success("2FA enabled successfully!");
         setQrCodeUrl("");
         setOtp("");
+        navigate("/admin/panel-dashboard")
       }
+
     } catch (err) {
       toast.error(err.response?.data?.message || "Invalid 2FA code");
     }

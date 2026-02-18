@@ -28,10 +28,12 @@ import PrivacyPolicy from "./DashboardPages/AppController/PrivacyPolicy.jsx";
 import TermAndConditions from "./DashboardPages/AppController/TermAndConditions.jsx";
 import { UserProfile } from "./DashboardPages/UserProfile.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
+     <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />

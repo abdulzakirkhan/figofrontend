@@ -4,6 +4,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
+import { useGetMeQuery } from "../redux/auth/authApi";
+import { hasPermission } from "../helpers/hasPermissionHelper";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,6 +42,10 @@ const CustomTabs = ({ tabs, panels, setcurrentTab, setStatus, tabBgColor = "#f8f
   const dataParam = queryParams.get("activeTab");
   const [value, setValue] = React.useState(Number(dataParam) || 0);
 
+    const { data: meData, isLoading: meLoading } = useGetMeQuery();
+    const canCreateGeneralSetting = hasPermission(meData?.permissions,"general_setting","create",);
+    const canUpdateGeneralSetting = hasPermission(meData?.permissions,"general_setting","update",);
+    const canDeleteGeneralSetting = hasPermission(meData?.permissions,"general_setting","delete",);
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (setcurrentTab) setcurrentTab(newValue);

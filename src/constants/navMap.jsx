@@ -3,7 +3,11 @@ import { TbMedicineSyrup } from "react-icons/tb";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { LuUserRoundCog } from "react-icons/lu";
 import { IoPricetagsOutline } from "react-icons/io5";
-
+import { FaUsers } from "react-icons/fa";
+import { FiCreditCard } from "react-icons/fi";
+import { MdSimCard } from "react-icons/md";
+import { FiServer } from "react-icons/fi";
+import { FiSettings } from "react-icons/fi";
 export const navMap = {
   dashboard: {
     label: "Dashboards",
@@ -23,7 +27,7 @@ export const navMap = {
   customers: {
     label: "Users",
     link: "/admin/customers",
-    icon: <TbMedicineSyrup style={{ fontSize: "20px" }} />,
+    icon: <FaUsers style={{ fontSize: "20px" }} />,
   },
   support_help: {
     label: "Support & Help",
@@ -33,12 +37,12 @@ export const navMap = {
   esim: {
     label: "Subscribers",
     link: "/admin/esim",
-    icon: <TbMedicineSyrup style={{ fontSize: "20px" }} />,
+    icon: <MdSimCard style={{ fontSize: "20px" }} />,
   },
 transctions: {
   label: "Purchases",
   link: "/admin/transaction",
-  icon: <IoPricetagsOutline />
+  icon: <FiCreditCard />
 },
 
   system_settings: {
@@ -63,7 +67,7 @@ transctions: {
   provider: {
     label: "Provider",
     link: "/admin/providers",
-    icon: <LuUserRoundCog style={{ fontSize: "20px" }} />,
+    icon: <FiServer style={{ fontSize: "20px" }} />,
   },
 
  location_zone: {
@@ -87,7 +91,7 @@ transctions: {
   app_control:{
     label: "App Control",
     link: "/admin/appcontroller",
-    icon: <LuUserRoundCog style={{ fontSize: "20px" }} />,
+    icon: <FiSettings style={{ fontSize: "20px" }} />,
   },
   app_hero_banner:{
     label: "App Banner",

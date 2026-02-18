@@ -10,6 +10,7 @@ import sim from "/sim.png";
 import { useNavigate } from "react-router-dom";
 import { useGetCustomersUsersQuery } from "../redux/customers/customersApi";
 import DataTable from "../components/Table/DataTable";
+import AppLoader from "../components/Loader/AppLoader";
 
 export const Customers = () => {
   const navigate = useNavigate();
@@ -89,6 +90,9 @@ export const Customers = () => {
       ),
     },
   ];
+
+
+  if (isLoading) return <AppLoader fullPage />;
 
   return (
     <div>

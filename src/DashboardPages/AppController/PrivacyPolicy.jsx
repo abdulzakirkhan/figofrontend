@@ -8,9 +8,6 @@
 
 // export default PrivacyPolicy
 
-
-
-
 import React, { useMemo, useState } from "react";
 import {
   Box,
@@ -36,11 +33,14 @@ import DataTable from "../../components/Table/DataTable";
 import AppLoader from "../../components/Loader/AppLoader";
 
 import {
-    useListLegalContentQuery,
-    useCreateLegalContentMutation,
-    useUpdateLegalContentMutation,
-    useDeleteLegalContentMutation,
+  useListLegalContentQuery,
+  useCreateLegalContentMutation,
+  useUpdateLegalContentMutation,
+  useDeleteLegalContentMutation,
 } from "../../redux/appControll/appControlMouduleApi";
+import { useGetMeQuery } from "../../redux/auth/authApi";
+import { hasPermission } from "../../helpers/hasPermissionHelper";
+import toast from "react-hot-toast";
 
 export default function PrivacyPolicy() {
   /* ---------------- API ---------------- */
@@ -49,7 +49,23 @@ export default function PrivacyPolicy() {
   const [updateLegal] = useUpdateLegalContentMutation();
   const [deleteLegal] = useDeleteLegalContentMutation();
 
- 
+  const { data: meData, isLoading: meLoading } = useGetMeQuery();
+  const canCreatePrivacyPolicy = hasPermission(
+    meData?.permissions,
+    "privacy_policy",
+    "create",
+  );
+  const canUpdatePrivacyPolicy = hasPermission(
+    meData?.permissions,
+    "privacy_policy",
+    "update",
+  );
+  const canDeletePrivacyPolicy = hasPermission(
+    meData?.permissions,
+    "privacy_policy",
+    "delete",
+  );
+
   /* ---------------- STATE ---------------- */
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("create"); // create | edit | view
@@ -105,9 +121,12 @@ export default function PrivacyPolicy() {
     }
 
     if (mode === "edit") {
-      await updateLegal({ id: form._id, ...payload });
+     const response = await updateLegal({ id: form._id, ...payload });
+     if(response?.data?.message == "Updated"){
+      toast.success("Updated SuccessFully !")
+     }
     } else {
-      await createLegal(payload);
+      const response =await createLegal(payload);
     }
 
     setOpen(false);
@@ -116,7 +135,10 @@ export default function PrivacyPolicy() {
 
   const handleDelete = async (row) => {
     if (!window.confirm("Delete this item?")) return;
-    await deleteLegal(row.raw._id);
+    const response =await deleteLegal(row.raw._id);
+    if(response?.data?.response){
+      toast.success("Deleted SuccessFully !")
+    }
   };
 
   /* ---------------- ROWS ---------------- */
@@ -163,13 +185,17 @@ export default function PrivacyPolicy() {
             <VisibilityIcon color="primary" />
           </IconButton>
 
-          <IconButton size="small" onClick={() => openEdit(row)}>
-            <EditIcon color="secondary" />
-          </IconButton>
+          {canUpdatePrivacyPolicy && (
+            <IconButton size="small" onClick={() => openEdit(row)}>
+              <EditIcon color="secondary" />
+            </IconButton>
+          )}
 
-          <IconButton size="small" onClick={() => handleDelete(row)}>
-            <DeleteIcon color="error" />
-          </IconButton>
+          {canDeletePrivacyPolicy && (
+            <IconButton size="small" onClick={() => handleDelete(row)}>
+              <DeleteIcon color="error" />
+            </IconButton>
+          )}
         </>
       ),
     },
@@ -177,33 +203,31 @@ export default function PrivacyPolicy() {
 
   if (isLoading) return <AppLoader fullPage />;
 
-
   const cardStyle = {
-  border: "1px solid #E5E7EB",
-  borderRadius: 2,
-  p: 2,
-  mb: 2,
-  backgroundColor: "#fff",
-};
+    border: "1px solid #E5E7EB",
+    borderRadius: 2,
+    p: 2,
+    mb: 2,
+    backgroundColor: "#fff",
+  };
 
-const dialogTitleStyle = {
-  textAlign: "center",
-  fontWeight: 700,
-  fontSize: 22,
-  background: "linear-gradient(90deg, #6A1B9A, #D81B60)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-};
+  const dialogTitleStyle = {
+    textAlign: "center",
+    fontWeight: 700,
+    fontSize: 22,
+    background: "linear-gradient(90deg, #6A1B9A, #D81B60)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  };
 
-const footerStyle = {
-  display: "flex",
-  justifyContent: "flex-end",
-  gap: 1,
-  px: 3,
-  py: 2,
-  borderTop: "1px solid #eee",
-};
-
+  const footerStyle = {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: 1,
+    px: 3,
+    py: 2,
+    borderTop: "1px solid #eee",
+  };
 
   /* ---------------- UI ---------------- */
   return (
@@ -213,9 +237,11 @@ const footerStyle = {
           Legal Content
         </Typography>
 
-        <Button variant="contained" onClick={openCreate}>
-          Add Content
-        </Button>
+        {canCreatePrivacyPolicy && (
+          <Button variant="contained" onClick={openCreate}>
+            Add Content
+          </Button>
+        )}
       </Box>
 
       <DataTable
@@ -229,141 +255,129 @@ const footerStyle = {
       />
 
       {/* ---------------- MODAL ---------------- */}
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-    <DialogTitle>
-  <Typography sx={dialogTitleStyle}>
-    {mode === "view"
-      ? "View Legal Content"
-      : mode === "edit"
-      ? "Edit Legal Content"
-      : "Create Legal Content"}
-  </Typography>
-
-  <Typography
-    variant="body2"
-    align="center"
-    color="text.secondary"
-  >
-    Manage privacy policy & terms with full control
-  </Typography>
-</DialogTitle>
-
-
-
-<DialogContent sx={{ backgroundColor: "#F9FAFB" }}>
-  {/* BASIC INFORMATION */}
-  <Box sx={cardStyle}>
-    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-      <Typography fontWeight={600}>Basic Information</Typography>
-      <Chip
-        size="small"
-        label="Required"
-        color="primary"
-        sx={{ ml: 1 }}
-      />
-    </Box>
-
-    <TextField
-      select
-      fullWidth
-      label="Content Type"
-      margin="normal"
-      value={form.type}
-      disabled={mode !== "create"}
-      onChange={(e) =>
-        setForm((p) => ({ ...p, type: e.target.value }))
-      }
-    >
-      <MenuItem value="privacy">Privacy Policy</MenuItem>
-      <MenuItem value="terms">Terms & Conditions</MenuItem>
-    </TextField>
-
-    <TextField
-      fullWidth
-      label="Title"
-      margin="normal"
-      value={form.title}
-      disabled={mode === "view"}
-      onChange={(e) =>
-        setForm((p) => ({ ...p, title: e.target.value }))
-      }
-    />
-  </Box>
-
-  {/* CONTENT SECTION */}
-  <Box sx={cardStyle}>
-    <Typography fontWeight={600} mb={1}>
-      Content Details
-    </Typography>
-
-    <TextField
-      fullWidth
-      label="Content"
-      margin="normal"
-      multiline
-      rows={8}
-      value={form.content}
-      disabled={mode === "view"}
-      onChange={(e) =>
-        setForm((p) => ({ ...p, content: e.target.value }))
-      }
-    />
-  </Box>
-
-  {/* SETTINGS */}
-  <Box sx={cardStyle}>
-    <Typography fontWeight={600} mb={1}>
-      Status
-    </Typography>
-
-    <FormControlLabel
-      control={
-        <Switch
-          checked={form.isActive}
-          disabled={mode === "view"}
-          onChange={(e) =>
-            setForm((p) => ({ ...p, isActive: e.target.checked }))
-          }
-        />
-      }
-      label={
-        <Box>
-          <Typography fontWeight={500}>Active</Typography>
-          <Typography variant="caption" color="text.secondary">
-            Show or hide this content in app
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          <Typography sx={dialogTitleStyle}>
+            {mode === "view"
+              ? "View Legal Content"
+              : mode === "edit"
+                ? "Edit Legal Content"
+                : "Create Legal Content"}
           </Typography>
-        </Box>
-      }
-    />
-  </Box>
-</DialogContent>
 
+          <Typography variant="body2" align="center" color="text.secondary">
+            Manage privacy policy & terms with full control
+          </Typography>
+        </DialogTitle>
 
+        <DialogContent sx={{ backgroundColor: "#F9FAFB" }}>
+          {/* BASIC INFORMATION */}
+          <Box sx={cardStyle}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+              <Typography fontWeight={600}>Basic Information</Typography>
+              <Chip
+                size="small"
+                label="Required"
+                color="primary"
+                sx={{ ml: 1 }}
+              />
+            </Box>
 
-<DialogActions sx={footerStyle}>
-  <Button
-    variant="outlined"
-    onClick={() => setOpen(false)}
-  >
-    Cancel
-  </Button>
+            <TextField
+              select
+              fullWidth
+              label="Content Type"
+              margin="normal"
+              value={form.type}
+              disabled={mode !== "create"}
+              onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))}
+            >
+              <MenuItem value="privacy">Privacy Policy</MenuItem>
+              <MenuItem value="terms">Terms & Conditions</MenuItem>
+            </TextField>
 
-  {mode !== "view" && (
-    <Button
-      variant="contained"
-      sx={{
-        background:
-          "linear-gradient(90deg, #6A1B9A, #D81B60)",
-      }}
-      onClick={handleSubmit}
-    >
-      {mode === "edit" ? "Update Content" : "Create Content"}
-    </Button>
-  )}
-</DialogActions>
+            <TextField
+              fullWidth
+              label="Title"
+              margin="normal"
+              value={form.title}
+              disabled={mode === "view"}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, title: e.target.value }))
+              }
+            />
+          </Box>
 
+          {/* CONTENT SECTION */}
+          <Box sx={cardStyle}>
+            <Typography fontWeight={600} mb={1}>
+              Content Details
+            </Typography>
 
+            <TextField
+              fullWidth
+              label="Content"
+              margin="normal"
+              multiline
+              rows={8}
+              value={form.content}
+              disabled={mode === "view"}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, content: e.target.value }))
+              }
+            />
+          </Box>
 
+          {/* SETTINGS */}
+          <Box sx={cardStyle}>
+            <Typography fontWeight={600} mb={1}>
+              Status
+            </Typography>
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={form.isActive}
+                  disabled={mode === "view"}
+                  onChange={(e) =>
+                    setForm((p) => ({ ...p, isActive: e.target.checked }))
+                  }
+                />
+              }
+              label={
+                <Box>
+                  <Typography fontWeight={500}>Active</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Show or hide this content in app
+                  </Typography>
+                </Box>
+              }
+            />
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={footerStyle}>
+          <Button variant="outlined" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+
+          {mode !== "view" && (
+            <Button
+              variant="contained"
+              sx={{
+                background: "linear-gradient(90deg, #6A1B9A, #D81B60)",
+              }}
+              onClick={handleSubmit}
+            >
+              {mode === "edit" ? "Update Content" : "Create Content"}
+            </Button>
+          )}
+        </DialogActions>
       </Dialog>
     </div>
   );

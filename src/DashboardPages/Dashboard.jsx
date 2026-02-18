@@ -17,6 +17,7 @@ import { Users, DollarSign, CreditCard, ShoppingBag, Calendar, Search, ChevronDo
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { useSelector } from "react-redux";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -37,7 +38,7 @@ const Dashboard = () => {
   const [textInput, setTextInput] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [region, setRegion] = useState('Select Region');
-
+  const user = useSelector((state) => state.auth.user);
   const StatCard = ({ icon: Icon, iconBg, title, value, change, changeType }) => {
     const getChartColor = () => {
       const colorMap = {
@@ -61,6 +62,7 @@ const Dashboard = () => {
       elements: { line: { tension: 0.4, borderWidth: 2.5 }, point: { radius: 0 } }
     };
 
+    console.log("user :",user)
     const chartConfig = {
       labels: ['', '', '', '', '', '', '', ''],
       datasets: [

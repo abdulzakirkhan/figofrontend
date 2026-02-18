@@ -1,0 +1,173 @@
+{
+    "id": "699067689beb348890b67ff0",
+    "name": "mike",
+    "email": "abdulzakir632@gmail.com",
+    "isActive": true,
+    "role": {
+        "id": "6942f853de0d855929756c3e",
+        "name": "Super Admin",
+        "key": "super_admin"
+    },
+    "permissions": [
+        {
+            "moduleKey": "system_settings",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "roles_permission",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "general_setting",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "logo_favicon",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "rp_user",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "rp_assign_permission",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "rp_roles",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "rp_menus",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "esim",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "customers",
+            "actions": [
+                "view",
+                "create",
+                "update"
+            ]
+        },
+        {
+            "moduleKey": "dashboard",
+            "actions": [
+                "view",
+                "create"
+            ]
+        },
+        {
+            "moduleKey": "transctions",
+            "actions": [
+                "view",
+                "update",
+                "create",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "provider",
+            "actions": [
+                "view",
+                "create"
+            ]
+        },
+        {
+            "moduleKey": "subscribers",
+            "actions": [
+                "view",
+                "create"
+            ]
+        },
+        {
+            "moduleKey": "package_templates",
+            "actions": [
+                "view",
+                "create"
+            ]
+        },
+        {
+            "moduleKey": "location_zone",
+            "actions": [
+                "view",
+                "create"
+            ]
+        },
+        {
+            "moduleKey": "app_control",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "privacy_policy",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        },
+        {
+            "moduleKey": "app_hero_banner",
+            "actions": [
+                "view",
+                "create",
+                "update",
+                "delete"
+            ]
+        }
+    ]
+}

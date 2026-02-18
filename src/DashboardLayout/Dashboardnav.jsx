@@ -2,12 +2,18 @@ import { Box, CssBaseline } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import {  useState } from "react";
+import { useGetMeQuery, useGetModulesTreeQuery } from "../redux/auth/authApi";
+import AppLoader from "../components/Loader/AppLoader";
 
 
 
 const Dashboardnav = ({ type,navigatePage }) => {
   const [profileData, setProfileData] = useState({});
+  const { data: meData, isLoading: meLoading } = useGetMeQuery();
+  const { data: modulesData, isLoading: modulesLoading } = useGetModulesTreeQuery();
 
+  const isAppLoading = meLoading || modulesLoading;
+  if (isAppLoading) return <AppLoader fullPage />;
   return (
     <Box
       className=""

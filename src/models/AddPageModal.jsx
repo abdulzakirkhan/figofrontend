@@ -251,7 +251,7 @@ const AddPageModal = ({open, onClose}) => {
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-4">
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               className="px-6 py-2.5 border border-[#FF6B6B] text-[#FF6B6B] text-[13px] font-bold rounded-lg hover:bg-[#FF6B6B]/5 transition-colors"
             >
               Cancel

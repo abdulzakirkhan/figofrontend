@@ -16,6 +16,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { navMap } from "../constants/navMap"; // adjust path
 import { useGetMeQuery, useGetModulesTreeQuery } from "../redux/auth/authApi"; // adjust path
 import { SIDEBAR_ORDER } from "../constants/sidebarOrder";
+import AppLoader from "../components/Loader/AppLoader";
 
 const drawerWidth = 270;
 
@@ -109,7 +110,8 @@ function SideNav(props) {
     })
     .filter(Boolean);
 }, [modulesTree, permissions]);
-  const loading = meLoading || modulesLoading;
+
+
 
   const drawer = (
     <div className="side-nav-outer-rounded bg-primary h-screen overflow-hidden">
@@ -123,7 +125,7 @@ function SideNav(props) {
             className="vertical-scrollable-box px-2"
             style={{ overflowY: "auto", flexGrow: 1 }}
           >
-            <List>
+            {/* <List>
               {loading ? (
                 <Typography sx={{ color: "white", p: 2, fontSize: 14 }}>
                   Loading...
@@ -135,6 +137,13 @@ function SideNav(props) {
                   </div>
                 ))
               )}
+            </List> */}
+            <List>
+              {listItemData.map((value, i) => (
+                  <div key={i} className="text-white rounded-lg my-2">
+                    <RenderItem value={value} i={i} />
+                  </div>
+                ))}
             </List>
           </div>
         </div>

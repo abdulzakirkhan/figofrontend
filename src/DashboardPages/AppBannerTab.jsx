@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import TableMui from '../components/TableMui';
 import AddBannerModal from '../models/AddBannerModal';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { useGetMeQuery } from '../redux/auth/authApi';
+import { hasPermission } from '../helpers/hasPermissionHelper';
 
 const AppBannerTab = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openAddBannerModal, setOpenAddBannerModal] = useState(false);
-
+  const { data: meData, isLoading: meLoading } = useGetMeQuery();
+  const canCreateGeneralSetting=hasPermission(meData?.permissions,"general_setting","create")
+  const canUpdateGeneralSetting=hasPermission(meData?.permissions,"general_setting","update")
+  const canDeleteGeneralSetting=hasPermission(meData?.permissions,"general_setting","update")
   // Sample banner data matching Figma
   const bannerData = [
     { id: 1, sl: '01', title: 'Tagline', description: 'Description', createdDate: '20/11/2025', status: 'Active' },
@@ -90,12 +95,16 @@ const AppBannerTab = () => {
           <button className="w-6 h-6 rounded-full bg-[#85C1E2]/20 flex items-center justify-center hover:bg-[#85C1E2]/30 transition-colors">
             <Eye size={13} className="text-[#85C1E2]" />
           </button>
-          <button className="w-6 h-6 rounded-full bg-[#22C55E]/20 flex items-center justify-center hover:bg-[#22C55E]/30 transition-colors">
-            <Pencil size={13} className="text-[#22C55E]" />
-          </button>
-          <button className="w-6 h-6 rounded-full bg-[#EF4444]/20 flex items-center justify-center hover:bg-[#EF4444]/30 transition-colors">
-            <Trash2 size={13} className="text-[#EF4444]" />
-          </button>
+          {canUpdateGeneralSetting && (
+            <button className="w-6 h-6 rounded-full bg-[#22C55E]/20 flex items-center justify-center hover:bg-[#22C55E]/30 transition-colors">
+              <Pencil size={13} className="text-[#22C55E]" />
+            </button>
+          )}
+          {canDeleteGeneralSetting && (
+            <button className="w-6 h-6 rounded-full bg-[#EF4444]/20 flex items-center justify-center hover:bg-[#EF4444]/30 transition-colors">
+              <Trash2 size={13} className="text-[#EF4444]" />
+            </button>
+          )}
         </div>
       )
     }
@@ -121,13 +130,15 @@ const AppBannerTab = () => {
             />
           </div>
         </div>
-        <button 
-          onClick={() => setOpenAddBannerModal(true)}
-          className="bg-[#4318FF] text-white px-5 py-2 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:bg-[#3311DD] transition-colors"
-        >
-          <span className="text-[18px] leading-none">+</span>
-          Add New User
-        </button>
+        {canCreateGeneralSetting && (
+          <button 
+            onClick={() => setOpenAddBannerModal(true)}
+            className="bg-[#4318FF] text-white px-5 py-2 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:bg-[#3311DD] transition-colors"
+          >
+            <span className="text-[18px] leading-none">+</span>
+            Add New User
+          </button>
+        )}
       </div>
 
       {/* Table */}

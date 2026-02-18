@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { Chip } from '@mui/material';
 import { useGetTransactionHistoryQuery } from '../redux/transactions/transactionModuleApi';
 import DataTable from '../components/Table/DataTable';
+import AppLoader from '../components/Loader/AppLoader';
 
 
 const Transaction = () => {
@@ -108,6 +109,8 @@ const Transaction = () => {
   }, [data]);
 
 
+
+    if (isLoading) return <AppLoader fullPage />;
   return (
     <DataTable
       columns={columns}

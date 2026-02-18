@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import DataTable from '../components/Table/DataTable';
 import { useGetAllSubscribersQuery } from '../redux/subscribers/subscribersModuleApi';
+import AppLoader from '../components/Loader/AppLoader';
 
 const EsimProfile = () => {
   const { data = [], isLoading } = useGetAllSubscribersQuery();
@@ -108,8 +109,7 @@ const columns = [
 
 
 
-  if (isLoading) return <div>Loading...</div>;
-
+  if (isLoading) return <AppLoader fullPage />;
   return (
 
     <DataTable

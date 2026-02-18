@@ -3,7 +3,6 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const LOCALHOST_URL = import.meta.env.VITE_LOCALHOST_URL;
 const PERMISSIONS_MODULES = "permission-modules";
 const ROLES_MODULES = "role-modules";
-
 // ADMIN ROUTES
 const ADMIN = "/admin";
 const AUTH_BOOTSTRAP_SUPERADMIN = "/auth/bootstrap-superadmin";
@@ -36,9 +35,13 @@ const ADMIN_AUDIT_LISTING = ADMIN+ADMIN+"s"+"/audits/list"
 const TRANSACTION_HISTORY = "/transactions/all"
 const SUBSCRIBERS = "/subscribers/all"
 const LOGIN_WITH_GOOGLE = "/google-login"
+const API = "/api"
+const BANNNERS = "/banners"
+const API_BANNERS = API+BANNNERS;
 
 export {
   BASE_URL,
+  API_BANNERS,
   PERMISSIONS_MODULES,
   ROLES_MODULES,
   // ADMIN ROUTES START

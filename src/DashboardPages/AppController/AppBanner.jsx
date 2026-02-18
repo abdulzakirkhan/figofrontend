@@ -12,6 +12,8 @@ import {
   TextField,
   Switch,
   FormControlLabel,
+  Tabs,
+  Tab,
 } from "@mui/material";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -27,6 +29,8 @@ import {
   useUpdateBannerMutation,
   useDeleteBannerMutation,
 } from "../../redux/appControll/appControlMouduleApi";
+import { useGetMeQuery } from "../../redux/auth/authApi";
+import { hasPermission } from "../../helpers/hasPermissionHelper";
 
 export default function AppBanner() {
   /* -------------------- API -------------------- */
@@ -34,11 +38,16 @@ export default function AppBanner() {
   const [createBanner] = useCreateBannerMutation();
   const [updateBanner] = useUpdateBannerMutation();
   const [deleteBanner] = useDeleteBannerMutation();
-
+  const { data: meData, isLoading: meLoading } = useGetMeQuery();
   /* -------------------- STATE -------------------- */
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("create"); // create | edit | view
-
+  
+  const [activeTab, setActiveTab] = useState(0);
+  
+  const canCreateBanner=hasPermission(meData?.permissions,"app_control","create")
+  const canUpdateBanner=hasPermission(meData?.permissions,"app_control","update")
+  const canDeleteBanner=hasPermission(meData?.permissions,"app_control","delete")
   const [form, setForm] = useState({
     _id: null,
     title: "",
@@ -47,17 +56,35 @@ export default function AppBanner() {
     isActive: true,
   });
 
+
+  // console.log("data :",data)
+
   /* -------------------- ROWS -------------------- */
   const rows = useMemo(() => {
-    return (data?.data || []).map((item, index) => ({
-      id: item._id,
-      sl: index + 1,
-      title: item.title,
-      description: item.description,
-      sortOrder: item.sortOrder,
-      status: item.isActive ? "Active" : "Inactive",
-      raw: item,
-    }));
+    return (data?.data || [])
+      .filter((item) => item.audience === "auth")  // 👈 yahan filter lagaya
+      .map((item, index) => ({
+        id: item._id,
+        sl: index + 1,
+        title: item.title,
+        description: item.description,
+        sortOrder: item.sortOrder,
+        status: item.isActive ? "Active" : "Inactive",
+        raw: item,
+      }));
+  }, [data]);
+  const rowsPublic = useMemo(() => {
+    return (data?.data || [])
+      .filter((item) => item.audience === "public")  // 👈 yahan filter lagaya
+      .map((item, index) => ({
+        id: item._id,
+        sl: index + 1,
+        title: item.title,
+        description: item.description,
+        sortOrder: item.sortOrder,
+        status: item.isActive ? "Active" : "Inactive",
+        raw: item,
+      }));
   }, [data]);
 
   /* -------------------- HANDLERS -------------------- */
@@ -145,13 +172,17 @@ export default function AppBanner() {
             <VisibilityIcon color="primary" />
           </IconButton>
 
-          <IconButton size="small" onClick={() => openEdit(row)}>
-            <EditIcon color="secondary" />
-          </IconButton>
+          {canUpdateBanner && (
+            <IconButton size="small" onClick={() => openEdit(row)}>
+              <EditIcon color="secondary" />
+            </IconButton>
+          )}
 
-          <IconButton size="small" onClick={() => handleDelete(row)}>
-            <DeleteIcon color="error" />
-          </IconButton>
+          {canDeleteBanner && (
+            <IconButton size="small" onClick={() => handleDelete(row)}>
+              <DeleteIcon color="error" />
+            </IconButton>
+          )}
         </>
       ),
     },
@@ -159,50 +190,62 @@ export default function AppBanner() {
 
   if (isLoading) return <AppLoader fullPage />;
 
-
   const cardStyle = {
-  border: "1px solid #E5E7EB",
-  borderRadius: 2,
-  p: 2,
-  mb: 2,
-  backgroundColor: "#fff",
-};
+    border: "1px solid #E5E7EB",
+    borderRadius: 2,
+    p: 2,
+    mb: 2,
+    backgroundColor: "#fff",
+  };
 
-const dialogTitleStyle = {
-  textAlign: "center",
-  fontWeight: 700,
-  fontSize: 22,
-  background: "linear-gradient(90deg, #6A1B9A, #D81B60)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-};
+  const dialogTitleStyle = {
+    textAlign: "center",
+    fontWeight: 700,
+    fontSize: 22,
+    background: "linear-gradient(90deg, #6A1B9A, #D81B60)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  };
 
-const footerStyle = {
-  display: "flex",
-  justifyContent: "flex-end",
-  gap: 1,
-  px: 3,
-  py: 2,
-  borderTop: "1px solid #eee",
-};
-
+  const footerStyle = {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: 1,
+    px: 3,
+    py: 2,
+    borderTop: "1px solid #eee",
+  };
 
   /* -------------------- UI -------------------- */
+
+
   return (
-    <div style={{ padding: 16 }}>
+    <div style={{ padding: 16,position:"relative" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <Typography variant="h5" fontWeight="bold">
           App Banners
         </Typography>
 
-        <Button variant="contained" onClick={openCreate}>
-          Add Banner
-        </Button>
+        {canCreateBanner && (
+          <Button variant="contained" onClick={openCreate}>
+            Add Banner
+          </Button>
+        )}
+      </Box>
+
+      <Box sx={{ mb: 2 ,position:"absolute",}}>
+        <Tabs
+          value={activeTab}
+          onChange={(e, newValue) => setActiveTab(newValue)}
+        >
+          <Tab label="With Auth" />
+          <Tab label="Public" />
+        </Tabs>
       </Box>
 
       <DataTable
         columns={columns}
-        rows={rows}
+        rows={activeTab === 0 ? rows : rowsPublic}
         uniqueKey="id"
         search
         serachPlaceholder="Search banners..."
@@ -211,126 +254,121 @@ const footerStyle = {
       />
 
       {/* ---------------- MODAL ---------------- */}
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-       <DialogTitle>
-  <Typography sx={dialogTitleStyle}>
-    {mode === "view"
-      ? "View Banner"
-      : mode === "edit"
-      ? "Edit Banner"
-      : "Create Banner"}
-  </Typography>
-
-  <Typography
-    variant="body2"
-    align="center"
-    color="text.secondary"
-  >
-    Configure app banner with full control
-  </Typography>
-</DialogTitle>
-
-     <DialogContent sx={{ backgroundColor: "#F9FAFB" }}>
-  {/* BASIC INFORMATION */}
-  <Box sx={cardStyle}>
-    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-      <Typography fontWeight={600}>Basic Information</Typography>
-      <Chip
-        size="small"
-        label="Required"
-        color="primary"
-        sx={{ ml: 1 }}
-      />
-    </Box>
-
-    <TextField
-      fullWidth
-      label="Title"
-      margin="normal"
-      value={form.title}
-      disabled={mode === "view"}
-      onChange={(e) =>
-        setForm((p) => ({ ...p, title: e.target.value }))
-      }
-    />
-
-    <TextField
-      fullWidth
-      label="Description"
-      margin="normal"
-      multiline
-      rows={3}
-      value={form.description}
-      disabled={mode === "view"}
-      onChange={(e) =>
-        setForm((p) => ({ ...p, description: e.target.value }))
-      }
-    />
-  </Box>
-
-  {/* SETTINGS */}
-  <Box sx={cardStyle}>
-    <Typography fontWeight={600} mb={1}>
-      Banner Settings
-    </Typography>
-
-    <TextField
-      fullWidth
-      label="Sort Order"
-      type="number"
-      margin="normal"
-      value={form.sortOrder}
-      disabled={mode === "view"}
-      onChange={(e) =>
-        setForm((p) => ({ ...p, sortOrder: e.target.value }))
-      }
-    />
-
-    <FormControlLabel
-      control={
-        <Switch
-          checked={form.isActive}
-          disabled={mode === "view"}
-          onChange={(e) =>
-            setForm((p) => ({ ...p, isActive: e.target.checked }))
-          }
-        />
-      }
-      label={
-        <Box>
-          <Typography fontWeight={500}>Active</Typography>
-          <Typography variant="caption" color="text.secondary">
-            Enable or disable this banner
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          <Typography sx={dialogTitleStyle}>
+            {mode === "view"
+              ? "View Banner"
+              : mode === "edit"
+                ? "Edit Banner"
+                : "Create Banner"}
           </Typography>
-        </Box>
-      }
-    />
-  </Box>
-</DialogContent>
 
+          <Typography variant="body2" align="center" color="text.secondary">
+            Configure app banner with full control
+          </Typography>
+        </DialogTitle>
 
-<DialogActions sx={footerStyle}>
-  <Button
-    variant="outlined"
-    onClick={() => setOpen(false)}
-  >
-    Cancel
-  </Button>
+        <DialogContent sx={{ backgroundColor: "#F9FAFB" }}>
+          {/* BASIC INFORMATION */}
+          <Box sx={cardStyle}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+              <Typography fontWeight={600}>Basic Information</Typography>
+              <Chip
+                size="small"
+                label="Required"
+                color="primary"
+                sx={{ ml: 1 }}
+              />
+            </Box>
 
-  {mode !== "view" && (
-    <Button
-      variant="contained"
-      sx={{
-        background:
-          "linear-gradient(90deg, #6A1B9A, #D81B60)",
-      }}
-      onClick={handleSubmit}
-    >
-      {mode === "edit" ? "Update Banner" : "Create Banner"}
-    </Button>
-  )}
-</DialogActions>
+            <TextField
+              fullWidth
+              label="Title"
+              margin="normal"
+              value={form.title}
+              disabled={mode === "view"}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, title: e.target.value }))
+              }
+            />
 
+            <TextField
+              fullWidth
+              label="Description"
+              margin="normal"
+              multiline
+              rows={3}
+              value={form.description}
+              disabled={mode === "view"}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, description: e.target.value }))
+              }
+            />
+          </Box>
+
+          {/* SETTINGS */}
+          <Box sx={cardStyle}>
+            <Typography fontWeight={600} mb={1}>
+              Banner Settings
+            </Typography>
+
+            <TextField
+              fullWidth
+              label="Sort Order"
+              type="number"
+              margin="normal"
+              value={form.sortOrder}
+              disabled={mode === "view"}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, sortOrder: e.target.value }))
+              }
+            />
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={form.isActive}
+                  disabled={mode === "view"}
+                  onChange={(e) =>
+                    setForm((p) => ({ ...p, isActive: e.target.checked }))
+                  }
+                />
+              }
+              label={
+                <Box>
+                  <Typography fontWeight={500}>Active</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Enable or disable this banner
+                  </Typography>
+                </Box>
+              }
+            />
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={footerStyle}>
+          <Button variant="outlined" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+
+          {mode !== "view" && (
+            <Button
+              variant="contained"
+              sx={{
+                background: "linear-gradient(90deg, #6A1B9A, #D81B60)",
+              }}
+              onClick={handleSubmit}
+            >
+              {mode === "edit" ? "Update Banner" : "Create Banner"}
+            </Button>
+          )}
+        </DialogActions>
       </Dialog>
     </div>
   );

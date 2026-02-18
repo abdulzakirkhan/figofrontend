@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import TableMui from '../components/TableMui';
 import AddPageModal from '../models/AddPageModal';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { useGetMeQuery } from '../redux/auth/authApi';
+import { hasPermission } from '../helpers/hasPermissionHelper';
 
 const PagesTab = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openAddPageModal, setOpenAddPageModal] = useState(false);
 
-
+    const { data: meData, isLoading: meLoading } = useGetMeQuery();
+    const canCreateGeneralSetting = hasPermission(meData?.permissions,"general_setting","create",);
+    const canUpdateGeneralSetting = hasPermission(meData?.permissions,"general_setting","update",);
+    const canDeleteGeneralSetting = hasPermission(meData?.permissions,"general_setting","delete",);
   // Sample pages data matching Figma
   const pagesData = [
     { id: 1, sl: '01', pageName: 'Page Name', description: 'Description', createdDate: '20/11/2025', status: 'Active' },
@@ -122,13 +127,15 @@ const PagesTab = () => {
             />
           </div>
         </div>
-        <button 
-          onClick={() => setOpenAddPageModal(true)}
-          className="bg-[#4318FF] text-white px-5 py-2 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:bg-[#3311DD] transition-colors"
-        >
-          <span className="text-[18px] leading-none">+</span>
-          Add New Page
-        </button>
+        {canCreateGeneralSetting && (
+          <button 
+            onClick={() => setOpenAddPageModal(true)}
+            className="bg-[#4318FF] text-white px-5 py-2 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:bg-[#3311DD] transition-colors"
+          >
+            <span className="text-[18px] leading-none">+</span>
+            Add New Page
+          </button>
+        )}
       </div>
 
       {/* Table */}
